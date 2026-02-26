@@ -1,0 +1,109 @@
+/* ===============================
+   LANDING PAGE STYLES
+================================= */
+
+.landing-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+}
+
+.landing-content {
+  max-width: 800px;
+}
+
+.landing-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.landing-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.landing-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.primary-btn {
+  padding: 12px 28px;
+  background-color: #ffffff;
+  color: #1e3c72;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  padding: 12px 28px;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.secondary-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   TABLET (768px and below)
+================================= */
+
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 2.2rem;
+  }
+
+  .landing-subtitle {
+    font-size: 1rem;
+  }
+
+  .landing-button-group {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* ===============================
+   MOBILE (480px and below)
+================================= */
+
+@media (max-width: 480px) {
+  .landing-title {
+    font-size: 16px;
+  }
+
+  .landing-subtitle {
+    font-size: 14px;
+  }
+  
+  .primary-btn{
+    font-size: 13px;
+  }
+
+  .secondary-btn{
+    font-size: 13px;
+  }
+
+}

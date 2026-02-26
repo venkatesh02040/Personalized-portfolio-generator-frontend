@@ -1,0 +1,112 @@
+/* ============================
+   REGISTER PAGE
+============================= */
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  padding: 20px;
+}
+
+.register-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.register-card h2 {
+  margin-bottom: 25px;
+  text-align: center;
+  color: #1e3c72;
+}
+
+.register-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-card input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+.register-card input:focus {
+  outline: none;
+  border-color: #1e3c72;
+}
+
+.register-card button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1e3c72;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.register-card button:hover {
+  background-color: #16325c;
+}
+
+.register-card button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.redirect-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.redirect-text a {
+  color: #1e3c72;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+
+/* ============================
+   TABLET (768px)
+============================= */
+
+@media (max-width: 768px) {
+  .register-card {
+    padding: 30px;
+  }
+
+  .register-card h2 {
+    font-size: 20px;
+  }
+}
+
+/* ============================
+   MOBILE (480px)
+============================= */
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 25px;
+  }
+
+  .register-card input {
+    font-size: 13px;
+  }
+
+  .register-card button {
+    font-size: 14px;
+  }
+}

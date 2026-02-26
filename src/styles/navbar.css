@@ -1,0 +1,198 @@
+/* =============================
+   NAVBAR BASE
+============================= */
+
+.navbar {
+  width: 100%;
+  background: #1e3c72;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  height: 65px;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =============================
+   LOGO
+============================= */
+
+.navbar-logo a {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+}
+
+/* =============================
+   LINKS
+============================= */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar-links a:hover {
+  opacity: 0.8;
+}
+
+
+/* Register button style */
+.primary-btn {
+  background: white;
+  color: #1e3c72 !important;
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* Logout button */
+.logout-btn {
+  background: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #1e3c72;
+}
+
+/* Nav links alignment */
+.navbar-links a,
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon styling */
+.nav-icon {
+  font-size: 16px;
+}
+
+
+
+/* =============================
+   HAMBURGER
+============================= */
+
+.navbar-toggle {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Share Icon */
+.navbar-share {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.navbar-share.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Keep share left of hamburger */
+.navbar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-toggle {
+  margin-left: 10px;
+}
+
+/* Share Modal */
+.share-modal-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.share-input {
+  flex: 1;
+  padding: 8px;
+}
+
+.copy-icon {
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.copy-icon:hover {
+  color: #1890ff;
+}
+
+
+/* =============================
+   TABLET
+============================= */
+
+@media (max-width: 992px) {
+
+  .navbar-links {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    height: calc(100vh - 65px);
+    width: 260px;
+    background: #1e3c72;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 25px;
+    gap: 20px;
+
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+
+  .navbar-links.show {
+    transform: translateX(0);
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+
+/* =============================
+   MOBILE
+============================= */
+
+@media (max-width: 576px) {
+
+  .navbar-wrapper {
+    padding: 0 15px;
+  }
+
+  .navbar-links {
+    width: 100%;
+  }
+}
