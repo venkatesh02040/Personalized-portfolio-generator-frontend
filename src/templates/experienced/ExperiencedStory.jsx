@@ -6,22 +6,17 @@ import {
     FaExternalLinkAlt, FaCertificate, FaCopy,
 } from "react-icons/fa";
 
-const ExperiencedStory = () => {
-    const [user, setUser] = useState(null);
+const ExperiencedStory = ({ user }) => { // ✅ use prop instead of localStorage
     const [userCity, setUserCity] = useState("India");
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        const stored = localStorage.getItem("user");
-        if (stored) {
-            try { setUser(JSON.parse(stored)); } catch { }
-        }
-
-        fetch("https://ipapi.co/json/")
+        // ✅ ipwho.is instead of ipapi.co (no CORS issues)
+        fetch("https://ipwho.is/")
             .then(r => r.json())
             .then(data => {
                 if (data.city && data.region) setUserCity(`${data.city}, ${data.region}`);
-                else if (data.country_name) setUserCity(data.country_name);
+                else if (data.country) setUserCity(data.country);
             })
             .catch(() => { });
     }, []);
@@ -52,11 +47,11 @@ const ExperiencedStory = () => {
         <>
             <style>{`
         :root {
-          --bg:         #fdfaf5;       /* warm off-white */
-          --text:       #0f0e17;       /* near-black */
-          --primary:    #0d1117;       /* deep navy */
-          --accent:     #ff4d6d;       /* electric coral */
-          --accent2:    #00ff9d;       /* vivid lime for highlights */
+          --bg:         #fdfaf5;
+          --text:       #0f0e17;
+          --primary:    #0d1117;
+          --accent:     #ff4d6d;
+          --accent2:    #00ff9d;
           --card:       #ffffff;
           --muted:      #6b7280;
           --gradient:   linear-gradient(135deg, #ff4d6d 0%, #ff9a8b 100%);
@@ -83,7 +78,6 @@ const ExperiencedStory = () => {
 
         h1, h2, h3 { line-height: 1.1; }
 
-        /* Hero ──────────────────────── */
         .hero {
           min-block-size: 100dvh;
           background: var(--gradient);
@@ -152,6 +146,7 @@ const ExperiencedStory = () => {
           background: white;
           color: var(--accent);
           box-shadow: 0 10px 30px rgba(255,77,109,0.4);
+          border: none;
         }
 
         .btn-primary:hover {
@@ -170,7 +165,6 @@ const ExperiencedStory = () => {
           transform: translateY(-5px);
         }
 
-        /* Sections ──────────────────────── */
         .section {
           padding-block: clamp(6rem, 12vw, 10rem);
         }
@@ -195,7 +189,6 @@ const ExperiencedStory = () => {
           margin: 0 auto 4rem;
         }
 
-        /* Timeline ──────────────────────── */
         .timeline {
           position: relative;
           max-width: 1000px;
@@ -253,7 +246,6 @@ const ExperiencedStory = () => {
           margin-block-end: 1rem;
         }
 
-        /* Projects ──────────────────────── */
         .projects-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(460px, 340px));
@@ -307,7 +299,6 @@ const ExperiencedStory = () => {
           border: 1px solid rgba(255,77,109,0.3);
         }
 
-        /* Skills ──────────────────────── */
         .skills-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -341,7 +332,6 @@ const ExperiencedStory = () => {
           transition: width 1.4s ease-out;
         }
 
-        /* Footer ──────────────────────── */
         .footer {
           background: var(--primary);
           color: white;
@@ -367,39 +357,23 @@ const ExperiencedStory = () => {
           transform: scale(1.3) rotate(10deg);
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
           .timeline::before { left: 1.5rem; }
           .timeline-item { margin-inline: 2.5rem; }
           .timeline-item::after { left: 0.4rem; }
           .hero-name { font-size: clamp(3.2rem, 14vw, 5rem); }
-                    .projects-grid {
+          .projects-grid {
             grid-template-columns: repeat(auto-fit, minmax(1fr,1fr));
-          justify-content: center;
-           }
+            justify-content: center;
+          }
         }
 
         @media (max-width: 480px) {
           .btn { padding: 0.9rem 1.8rem; font-size: 1.05rem; }
-          .hero-content {
-            text-align: left;
-            position: relative;
-            z-index: 2;
-            }
-          .hero-cta {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            width:200px
-            }
-          .projects-grid {
-            grid-template-columns: 1fr;
-            }
-
-        .skills-grid {
-          grid-template-columns: 1fr;
-        }
-
+          .hero-content { text-align: left; position: relative; z-index: 2; }
+          .hero-cta { display: flex; flex-direction: column; gap: 1.2rem; width:200px }
+          .projects-grid { grid-template-columns: 1fr; }
+          .skills-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 

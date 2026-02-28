@@ -5,29 +5,19 @@ import {
   FaExternalLinkAlt, FaCalendarAlt
 } from "react-icons/fa";
 
-const TemplateFresherCreative = () => {
-  const [user, setUser] = useState(null);
+const TemplateFresherCreative = ({ user }) => { // ✅ use prop instead of localStorage
   const [userCity, setUserCity] = useState("India");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsed = JSON.parse(storedUser);
-        setUser(parsed);
-      } catch (err) {
-        console.error("Error parsing user data", err);
-      }
-    }
-
-    fetch("https://ipapi.co/json/")
+    // ✅ ipwho.is instead of ipapi.co (no CORS issues)
+    fetch("https://ipwho.is/")
       .then(res => res.json())
       .then(data => {
         if (data.city && data.region) {
           setUserCity(`${data.city}, ${data.region}`);
-        } else if (data.country_name) {
-          setUserCity(data.country_name);
+        } else if (data.country) {
+          setUserCity(data.country);
         }
       })
       .catch(() => {});
@@ -86,7 +76,6 @@ const TemplateFresherCreative = () => {
 
         .portfolio { min-height: 100vh; }
 
-        /* HERO */
         .hero {
           min-height: 100vh;
           display: flex;
@@ -178,6 +167,7 @@ const TemplateFresherCreative = () => {
           background: white;
           color: #5b21b6;
           box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+          border: none;
         }
 
         .btn-primary:hover {
@@ -211,7 +201,6 @@ const TemplateFresherCreative = () => {
           border-color: rgba(255,255,255,0.45);
         }
 
-        /* SECTIONS */
         .section {
           padding: 160px 24px;
           max-width: 1400px;
@@ -230,7 +219,6 @@ const TemplateFresherCreative = () => {
           -webkit-text-fill-color: transparent;
         }
 
-        /* SKILLS - CIRCLE PROGRESS */
         .skills-container {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -281,7 +269,6 @@ const TemplateFresherCreative = () => {
           color: #c4b5fd;
         }
 
-        /* PROJECTS - MASONRY STYLE */
         .projects-masonry {
           column-count: 2;
           column-gap: 40px;
@@ -345,7 +332,6 @@ const TemplateFresherCreative = () => {
           border: 1px solid rgba(167,139,250,0.35);
         }
 
-        /* TIMELINE */
         .timeline {
           position: relative;
           padding: 0 40px;
@@ -400,7 +386,6 @@ const TemplateFresherCreative = () => {
           border-radius: 24px;
         }
 
-        /* FOOTER */
         .footer {
           background: rgba(15,23,42,0.92);
           backdrop-filter: blur(12px);
@@ -429,7 +414,6 @@ const TemplateFresherCreative = () => {
           transform: translateY(-14px) rotate(10deg);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1100px) {
           .hero-title { font-size: 5rem; }
           .profile-pic { width: 360px; height: 360px; }
@@ -448,7 +432,6 @@ const TemplateFresherCreative = () => {
         @media (max-width: 480px) {
           .hero-title { font-size: 3.5rem; }
           .btn { padding: 14px 32px; font-size: 1rem; }
-
           .hero-container{grid-template-columns: 1fr;gap: 30px;}
           .social-links {gap: 30px;}
           .profile-pic {width: 300px;height: 300px;}
@@ -496,7 +479,7 @@ const TemplateFresherCreative = () => {
         </div>
       </div>
 
-      {/* SKILLS - CIRCULAR PROGRESS */}
+      {/* SKILLS */}
       <div className="section">
         <h2 className="section-title">Skill Spectrum</h2>
         <div className="skills-container">
@@ -516,10 +499,7 @@ const TemplateFresherCreative = () => {
                         <stop offset="100%" stopColor="#7c3aed" />
                       </linearGradient>
                     </defs>
-                    <circle
-                      className="skill-circle-circle"
-                      cx="100" cy="100" r={radius}
-                    />
+                    <circle className="skill-circle-circle" cx="100" cy="100" r={radius} />
                     <circle
                       className="skill-circle-progress"
                       cx="100" cy="100" r={radius}
@@ -555,13 +535,11 @@ const TemplateFresherCreative = () => {
                 <div className="project-body">
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-desc">{project.description}</p>
-
                   <div className="tech-tags">
                     {project.technologies?.map((tech, idx) => (
                       <span key={idx} className="tech-tag">{tech}</span>
                     ))}
                   </div>
-
                   {project.project_link && (
                     <a
                       href={project.project_link}
@@ -613,7 +591,7 @@ const TemplateFresherCreative = () => {
                     href={cert.certificate_pdf_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "#c084fc", fontWeight: 600, marginTop: "12px", display: "block",textDecoration:"none" }}
+                    style={{ color: "#c084fc", fontWeight: 600, marginTop: "12px", display: "block", textDecoration:"none" }}
                   >
                     View Certificate →
                   </a>
@@ -634,7 +612,7 @@ const TemplateFresherCreative = () => {
         </div>
 
         <p style={{ opacity: 0.85, fontSize: "1.15rem" }}>
-          © {new Date().getFullYear()} {username}  • Dreamer • Builder • Learner
+          © {new Date().getFullYear()} {username} • Dreamer • Builder • Learner
         </p>
       </div>
     </>

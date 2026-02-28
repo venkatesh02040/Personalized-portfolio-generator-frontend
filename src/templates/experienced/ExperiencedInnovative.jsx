@@ -16,26 +16,17 @@ import {
   FaBriefcase,
 } from "react-icons/fa";
 
-const ExperiencedInnovative = () => {
-  const [user, setUser] = useState(null);
+const ExperiencedInnovative = ({ user }) => { // ✅ use prop instead of localStorage
   const [userCity, setUserCity] = useState("India");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error("Error parsing user data", err);
-      }
-    }
-
-    fetch("https://ipapi.co/json/")
+    // ✅ ipwho.is instead of ipapi.co (no CORS issues)
+    fetch("https://ipwho.is/")
       .then((res) => res.json())
       .then((data) => {
         if (data.city && data.region) setUserCity(`${data.city}, ${data.region}`);
-        else if (data.country_name) setUserCity(data.country_name);
+        else if (data.country) setUserCity(data.country);
       })
       .catch(() => {});
   }, []);

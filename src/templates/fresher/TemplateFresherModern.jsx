@@ -5,25 +5,18 @@ import {
   FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt, FaEnvelope, FaPhone
 } from "react-icons/fa";
 
-const TemplateFresherModern = () => {
-  const [user, setUser] = useState(null);
+const TemplateFresherModern = ({ user }) => { // ✅ use prop instead of localStorage
   const [userCity, setUserCity] = useState("Bengaluru, Karnataka");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error("Error parsing user data", err);
-      }
-    }
-
-    fetch("https://ipapi.co/json/")
+    // ✅ ipwho.is instead of ipapi.co (no CORS issues)
+    fetch("https://ipwho.is/")
       .then(res => res.json())
       .then(data => {
         if (data.city && data.region) {
           setUserCity(`${data.city}, ${data.region}`);
+        } else if (data.country) {
+          setUserCity(data.country);
         }
       })
       .catch(() => { });
@@ -80,7 +73,6 @@ const TemplateFresherModern = () => {
           padding: 0 1.5rem;
         }
 
-        /* ── HERO ── */
         .hero {
           background: linear-gradient(to bottom right, #f1f5f9, #e2e8f0);
           padding: 10rem 0 8rem;
@@ -107,7 +99,7 @@ const TemplateFresherModern = () => {
           line-height: 1.05;
           margin-bottom: 1.25rem;
           color: var(--text);
-           text-transform: capitalize;
+          text-transform: capitalize;
         }
 
         .hero-subtitle {
@@ -181,7 +173,6 @@ const TemplateFresherModern = () => {
           color: white;
         }
 
-        /* ── SECTIONS ── */
         .section {
           padding: 9rem 0;
         }
@@ -210,7 +201,6 @@ const TemplateFresherModern = () => {
           border-radius: 999px;
         }
 
-        /* Skills */
         .skills-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -249,13 +239,12 @@ const TemplateFresherModern = () => {
           transition: width 1.2s ease-out;
         }
 
-        /* Projects */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 400px));
-  justify-content: center;
-  gap: 2rem;
-}
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(340px, 400px));
+          justify-content: center;
+          gap: 2rem;
+        }
 
         .project {
           background: white;
@@ -308,7 +297,6 @@ const TemplateFresherModern = () => {
           font-weight: 500;
         }
 
-        /* Timeline (Education & Certs) */
         .timeline {
           max-width: 800px;
           margin: 0 auto;
@@ -344,7 +332,6 @@ const TemplateFresherModern = () => {
           margin-bottom: 0.6rem;
         }
 
-        /* Footer */
         .footer {
           background: #0f172a;
           color: #cbd5e1;
@@ -370,7 +357,6 @@ const TemplateFresherModern = () => {
           transform: translateY(-5px);
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
           .hero-grid { grid-template-columns: 1fr; text-align: center; }
           .avatar-frame { max-width: 320px; }
@@ -385,76 +371,30 @@ const TemplateFresherModern = () => {
         @media (max-width: 480px) {
           .hero-title { font-size: 2.8rem; }
           .btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
-            .projects-grid { grid-template-columns: 1fr; }
+          .projects-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 360px) {
-    .container {
-      padding-left: 12px;
-      padding-right: 12px;
-    }
-
-    .hero {
-      padding-top: clamp(4rem, 16vw, 6rem);
-      padding-bottom: clamp(3rem, 12vw, 5rem);
-    }
-
-    .hero-title {
-      font-size: clamp(2.1rem, 11vw, 2.7rem);
-    }
-
-    .hero-subtitle {
-      font-size: clamp(1rem, 4.8vw, 1.15rem);
-    }
-
-    .meta {
-      gap: 1rem 1.6rem;
-      font-size: 0.93rem;
-      justify-content: left;
-    }
-
-    .avatar-frame {
-      max-width: 220px;
-      margin-top: 1.2rem;
-    }
-
-    .btn {
-      padding: 0.7rem 1.3rem;
-      font-size: 0.96rem;
-      min-width: unset;
-      width: 100%;
-      max-width: none;
-    }
-
-    .section-title {
-      font-size: clamp(1.65rem, 9vw, 2.2rem);
-    }
-
-    .section-title span::after {
-      width: 4rem;
-    }
-
-    .skills-grid,
-    .projects-grid {
-      gap: 1.2rem;
-    }
-
-    .project-img {
-      height: 160px;
-    }
-  }
+          .container { padding-left: 12px; padding-right: 12px; }
+          .hero { padding-top: clamp(4rem, 16vw, 6rem); padding-bottom: clamp(3rem, 12vw, 5rem); }
+          .hero-title { font-size: clamp(2.1rem, 11vw, 2.7rem); }
+          .hero-subtitle { font-size: clamp(1rem, 4.8vw, 1.15rem); }
+          .meta { gap: 1rem 1.6rem; font-size: 0.93rem; justify-content: left; }
+          .avatar-frame { max-width: 220px; margin-top: 1.2rem; }
+          .btn { padding: 0.7rem 1.3rem; font-size: 0.96rem; min-width: unset; width: 100%; max-width: none; }
+          .section-title { font-size: clamp(1.65rem, 9vw, 2.2rem); }
+          .section-title span::after { width: 4rem; }
+          .skills-grid, .projects-grid { gap: 1.2rem; }
+          .project-img { height: 160px; }
+        }
       `}</style>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="hero">
         <div className="hero-gradient" />
         <div className="container">
           <div className="hero-grid">
-            <div style={{
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "left",
-            }}>
+            <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
               <h1 className="hero-title">{username}</h1>
               <p className="hero-subtitle">Open to full-time & internship opportunities</p>
 
@@ -484,7 +424,7 @@ const TemplateFresherModern = () => {
         </div>
       </section>
 
-      {/* ── SKILLS ── */}
+      {/* SKILLS */}
       {skills?.length > 0 && (
         <section className="section" style={{ background: "var(--bg-alt)" }}>
           <div className="container">
@@ -509,7 +449,7 @@ const TemplateFresherModern = () => {
         </section>
       )}
 
-      {/* ── PROJECTS ── */}
+      {/* PROJECTS */}
       {projects?.length > 0 && (
         <section id="projects" className="section">
           <div className="container">
@@ -552,7 +492,7 @@ const TemplateFresherModern = () => {
         </section>
       )}
 
-      {/* ── EDUCATION ── */}
+      {/* EDUCATION */}
       {education?.length > 0 && (
         <section className="section" style={{ background: "var(--bg-alt)" }}>
           <div className="container">
@@ -573,7 +513,7 @@ const TemplateFresherModern = () => {
         </section>
       )}
 
-      {/* ── CERTIFICATIONS ── */}
+      {/* CERTIFICATIONS */}
       {certifications?.length > 0 && (
         <section className="section">
           <div className="container">
@@ -603,7 +543,7 @@ const TemplateFresherModern = () => {
         </section>
       )}
 
-      {/* ── FOOTER ── */}
+      {/* FOOTER */}
       <footer className="footer">
         <div className="container">
           <div className="social-links">

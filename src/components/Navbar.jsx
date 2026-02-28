@@ -43,7 +43,7 @@ const Navbar = () => {
   const selectedTemplate = localStorage.getItem("selectedTemplate");
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const isShareDisabled = !selectedTemplate || !user;
+  const isShareDisabled = !selectedTemplate || !user || !user.slug; // ✅ also check slug exists
 
   // 🔹 Share Handler
   const handleShare = () => {
@@ -52,7 +52,7 @@ const Navbar = () => {
       return;
     }
 
-    const generatedLink = `${window.location.origin}/portfolio/${user.username}/${selectedTemplate}`;
+    const generatedLink = `${window.location.origin}/portfolio/${user.slug}/${selectedTemplate}`; // ✅ use slug instead of username
     setShareLink(generatedLink);
     setIsModalOpen(true);
   };

@@ -14,8 +14,7 @@ import {
     FaCalendarAlt,
 } from "react-icons/fa";
 
-const TemplateFresherProfessional = () => {
-    const [user, setUser] = useState(null);
+const TemplateFresherProfessional = ({ user }) => { // ✅ use prop instead of localStorage
     const [userCity, setUserCity] = useState("India");
     const [copied, setCopied] = useState(false);
     const [width, setWidth] = useState(window.innerWidth);
@@ -27,20 +26,12 @@ const TemplateFresherProfessional = () => {
     }, []);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            try {
-                setUser(JSON.parse(storedUser));
-            } catch (err) {
-                console.error("Error parsing user data", err);
-            }
-        }
-
-        fetch("https://ipapi.co/json/")
+        // ✅ ipwho.is instead of ipapi.co (no CORS issues)
+        fetch("https://ipwho.is/")
             .then((res) => res.json())
             .then((data) => {
                 if (data.city && data.region) setUserCity(`${data.city}, ${data.region}`);
-                else if (data.country_name) setUserCity(data.country_name);
+                else if (data.country) setUserCity(data.country);
             })
             .catch(() => { });
     }, []);
@@ -83,14 +74,10 @@ const TemplateFresherProfessional = () => {
 
     const { education = [], skills = [], projects = [] } = fresher;
 
-    // Breakpoints
     const isMobile = width < 640;
     const isTablet = width >= 640 && width < 1024;
     const isDesktop = width >= 1024;
 
-    // ────────────────────────────────────────────────
-    //  SHARED STYLE OBJECTS (extracted for clarity)
-    // ────────────────────────────────────────────────
     const containerStyle = {
         maxWidth: "1400px",
         margin: "0 auto",
@@ -109,7 +96,7 @@ const TemplateFresherProfessional = () => {
         fontWeight: 700,
         textAlign: "center",
         marginBottom: isMobile ? "2.5rem" : "4rem",
-        color: "#c4b5fd", // violet-300
+        color: "#c4b5fd",
     };
 
     return (
@@ -142,12 +129,7 @@ const TemplateFresherProfessional = () => {
                         alignItems: "center",
                     }}
                 >
-                    <div
-                        style={{
-                            textAlign: "left",
-                            maxWidth: isMobile ? "100%" : "none",
-                        }}
-                    >
+                    <div style={{ textAlign: "left", maxWidth: isMobile ? "100%" : "none" }}>
                         <h1
                             style={{
                                 fontSize: isMobile ? "3rem" : isTablet ? "4.5rem" : "6rem",
@@ -158,20 +140,13 @@ const TemplateFresherProfessional = () => {
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent",
                                 backgroundClip: "text",
-                                textAlign: "left",                   // extra safety
+                                textAlign: "left",
                             }}
                         >
                             {username}
                         </h1>
 
-                        <p
-                            style={{
-                                fontSize: isMobile ? "1.2rem" : "1.5rem",
-                                color: "#cbd5e1",
-                                marginBottom: "2rem",
-                                textAlign: "left",
-                            }}
-                        >
+                        <p style={{ fontSize: isMobile ? "1.2rem" : "1.5rem", color: "#cbd5e1", marginBottom: "2rem", textAlign: "left" }}>
                             Open to Exciting Opportunities
                         </p>
 
@@ -180,7 +155,7 @@ const TemplateFresherProfessional = () => {
                                 display: "flex",
                                 flexWrap: "wrap",
                                 gap: "1.75rem",
-                                justifyContent: "flex-start",         // ← changed to left
+                                justifyContent: "flex-start",
                                 marginBottom: "2.5rem",
                                 fontSize: isMobile ? "1rem" : "1.125rem",
                                 color: "#94a3b8",
@@ -194,14 +169,7 @@ const TemplateFresherProfessional = () => {
                             </div>
                         </div>
 
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "1rem",
-                                justifyContent: "flex-start",         // ← changed to left
-                            }}
-                        >
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "flex-start" }}>
                             <button
                                 onClick={copyEmail}
                                 style={{
@@ -256,12 +224,11 @@ const TemplateFresherProfessional = () => {
                         </div>
                     </div>
 
-                    {/* Right side - profile image (centered on mobile) */}
                     <div
                         style={{
                             position: "relative",
                             maxWidth: isMobile ? "280px" : isTablet ? "360px" : "420px",
-                            margin: isMobile ? "0 auto" : "0",              // centers the whole card block
+                            margin: isMobile ? "0 auto" : "0",
                         }}
                     >
                         <div
@@ -275,13 +242,7 @@ const TemplateFresherProfessional = () => {
                             <img
                                 src={profile_image_url}
                                 alt={username}
-                                style={{
-                                    width: "100%",
-                                    height: "auto",
-                                    display: "block",
-                                    objectFit: "cover",
-                                    aspectRatio: "1 / 1",
-                                }}
+                                style={{ width: "100%", height: "auto", display: "block", objectFit: "cover", aspectRatio: "1 / 1" }}
                             />
                         </div>
 
@@ -311,14 +272,7 @@ const TemplateFresherProfessional = () => {
             {skills?.length > 0 && (
                 <section style={{ background: "rgba(15,23,42,0.5)", ...sectionBaseStyle }}>
                     <h2 style={headingStyle}>Core Skills</h2>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: isMobile ? "0.75rem" : "1rem",
-                            justifyContent: "center",
-                        }}
-                    >
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? "0.75rem" : "1rem", justifyContent: "center" }}>
                         {skills.map((skill, i) => (
                             <div
                                 key={i}
@@ -383,42 +337,16 @@ const TemplateFresherProfessional = () => {
                                 <img
                                     src={proj.image_url || "https://via.placeholder.com/640x360?text=Project"}
                                     alt={proj.title}
-                                    style={{
-                                        width: "100%",
-                                        height: isMobile ? "180px" : "220px",
-                                        objectFit: "cover",
-                                    }}
+                                    style={{ width: "100%", height: isMobile ? "180px" : "220px", objectFit: "cover" }}
                                 />
                                 <div style={{ padding: isMobile ? "1.25rem" : "1.75rem" }}>
-                                    <h3
-                                        style={{
-                                            fontSize: isMobile ? "1.35rem" : "1.5rem",
-                                            fontWeight: 700,
-                                            marginBottom: "0.75rem",
-                                            color: "#c4b5fd"
-
-                                        }}
-                                    >
+                                    <h3 style={{ fontSize: isMobile ? "1.35rem" : "1.5rem", fontWeight: 700, marginBottom: "0.75rem", color: "#c4b5fd" }}>
                                         {proj.title}
                                     </h3>
-                                    <p
-                                        style={{
-                                            color: "#94a3b8",
-                                            marginBottom: "1rem",
-                                            lineHeight: 1.6,
-                                            fontSize: isMobile ? "0.9rem" : "0.95rem",
-                                        }}
-                                    >
+                                    <p style={{ color: "#94a3b8", marginBottom: "1rem", lineHeight: 1.6, fontSize: isMobile ? "0.9rem" : "0.95rem" }}>
                                         {proj.description}
                                     </p>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                            gap: "0.5rem",
-                                            marginBottom: "1rem",
-                                        }}
-                                    >
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
                                         {proj.technologies?.map((tag, idx) => (
                                             <span
                                                 key={idx}
@@ -439,15 +367,7 @@ const TemplateFresherProfessional = () => {
                                             href={proj.project_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            style={{
-                                                color: "#a78bfa",
-                                                fontWeight: 600,
-                                                display: "inline-flex",
-                                                alignItems: "center",
-                                                gap: "0.5rem",
-                                                textDecoration: "none",
-                                                fontSize: isMobile ? "0.9rem" : "1rem",
-                                            }}
+                                            style={{ color: "#a78bfa", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", fontSize: isMobile ? "0.9rem" : "1rem" }}
                                         >
                                             View Project <FaExternalLinkAlt size={isMobile ? 13 : 14} />
                                         </a>
@@ -482,21 +402,8 @@ const TemplateFresherProfessional = () => {
                             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#334155")}
                         >
-                            <FaGraduationCap
-                                style={{
-                                    fontSize: isMobile ? "2.5rem" : "3rem",
-                                    color: "#a78bfa",
-                                    marginBottom: "1rem",
-                                }}
-                            />
-                            <h3
-                                style={{
-                                    fontSize: isMobile ? "1.35rem" : "1.5rem",
-                                    fontWeight: 700,
-                                    marginBottom: "0.5rem",
-                                    color: "#c4b5fd"
-                                }}
-                            >
+                            <FaGraduationCap style={{ fontSize: isMobile ? "2.5rem" : "3rem", color: "#a78bfa", marginBottom: "1rem" }} />
+                            <h3 style={{ fontSize: isMobile ? "1.35rem" : "1.5rem", fontWeight: 700, marginBottom: "0.5rem", color: "#c4b5fd" }}>
                                 {edu.degree}
                             </h3>
                             <p style={{ color: "#94a3b8", fontSize: isMobile ? "0.9rem" : "1rem" }}>
@@ -518,21 +425,8 @@ const TemplateFresherProfessional = () => {
                             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#334155")}
                         >
-                            <FaCertificate
-                                style={{
-                                    fontSize: isMobile ? "2.5rem" : "3rem",
-                                    color: "#a78bfa",
-                                    marginBottom: "1rem",
-                                }}
-                            />
-                            <h3
-                                style={{
-                                    fontSize: isMobile ? "1.35rem" : "1.5rem",
-                                    fontWeight: 700,
-                                    marginBottom: "0.5rem",
-                                    color: "#c4b5fd"
-                                }}
-                            >
+                            <FaCertificate style={{ fontSize: isMobile ? "2.5rem" : "3rem", color: "#a78bfa", marginBottom: "1rem" }} />
+                            <h3 style={{ fontSize: isMobile ? "1.35rem" : "1.5rem", fontWeight: 700, marginBottom: "0.5rem", color: "#c4b5fd" }}>
                                 {cert.title}
                             </h3>
                             <p style={{ color: "#94a3b8", marginBottom: "1rem", fontSize: isMobile ? "0.9rem" : "1rem" }}>
@@ -543,12 +437,7 @@ const TemplateFresherProfessional = () => {
                                     href={cert.certificate_pdf_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    style={{
-                                        color: "#a78bfa",
-                                        fontWeight: 600,
-                                        textDecoration: "none",
-                                        fontSize: isMobile ? "0.9rem" : "1rem",
-                                    }}
+                                    style={{ color: "#a78bfa", fontWeight: 600, textDecoration: "none", fontSize: isMobile ? "0.9rem" : "1rem" }}
                                 >
                                     View Certificate →
                                 </a>
@@ -582,32 +471,14 @@ const TemplateFresherProfessional = () => {
                     {gmail && (
                         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                             <FaEnvelope style={{ color: "#a78bfa", fontSize: "1.25rem" }} /> {gmail}
-                            <button
-                                onClick={copyEmail}
-                                style={{
-                                    background: "none",
-                                    border: "none",
-                                    color: "#a78bfa",
-                                    cursor: "pointer",
-                                    fontSize: "1.25rem",
-                                }}
-                            >
+                            <button onClick={copyEmail} style={{ background: "none", border: "none", color: "#a78bfa", cursor: "pointer", fontSize: "1.25rem" }}>
                                 <FaCopy />
                             </button>
                         </div>
                     )}
 
                     {phone_number && (
-                        <a
-                            href={`tel:${phone_number}`}
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.75rem",
-                                color: "#e2e8f0",
-                                textDecoration: "none",
-                            }}
-                        >
+                        <a href={`tel:${phone_number}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "#e2e8f0", textDecoration: "none" }}>
                             <FaPhoneAlt style={{ color: "#a78bfa", fontSize: "1.25rem" }} /> {phone_number}
                         </a>
                     )}
@@ -617,21 +488,9 @@ const TemplateFresherProfessional = () => {
                     </div>
                 </div>
 
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: isMobile ? "1.5rem" : "2.5rem",
-                        marginBottom: "2rem",
-                        fontSize: isMobile ? "2rem" : "2.25rem",
-                    }}
-                >
+                <div style={{ display: "flex", justifyContent: "center", gap: isMobile ? "1.5rem" : "2.5rem", marginBottom: "2rem", fontSize: isMobile ? "2rem" : "2.25rem" }}>
                     {social_links?.github && (
-                        <a
-                            href={social_links.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "#e2e8f0", transition: "color 0.3s" }}
+                        <a href={social_links.github} target="_blank" rel="noopener noreferrer" style={{ color: "#e2e8f0", transition: "color 0.3s" }}
                             onMouseEnter={(e) => (e.currentTarget.style.color = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.color = "#e2e8f0")}
                         >
@@ -639,11 +498,7 @@ const TemplateFresherProfessional = () => {
                         </a>
                     )}
                     {social_links?.linkedin && (
-                        <a
-                            href={social_links.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "#e2e8f0", transition: "color 0.3s" }}
+                        <a href={social_links.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: "#e2e8f0", transition: "color 0.3s" }}
                             onMouseEnter={(e) => (e.currentTarget.style.color = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.color = "#e2e8f0")}
                         >
@@ -651,11 +506,7 @@ const TemplateFresherProfessional = () => {
                         </a>
                     )}
                     {social_links?.twitter && (
-                        <a
-                            href={social_links.twitter}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "#e2e8f0", transition: "color 0.3s" }}
+                        <a href={social_links.twitter} target="_blank" rel="noopener noreferrer" style={{ color: "#e2e8f0", transition: "color 0.3s" }}
                             onMouseEnter={(e) => (e.currentTarget.style.color = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.color = "#e2e8f0")}
                         >

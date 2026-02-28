@@ -16,8 +16,7 @@ import {
   FaBriefcase,
 } from "react-icons/fa";
 
-const ExperiencedExecutive = () => {
-  const [user, setUser] = useState(null);
+const ExperiencedExecutive = ({ user }) => { // ✅ accept user as prop
   const [userCity, setUserCity] = useState("India");
   const [copied, setCopied] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
@@ -28,24 +27,13 @@ const ExperiencedExecutive = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error("Error parsing user data", err);
-      }
-    }
-
-    fetch("https://ipapi.co/json/")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.city && data.region) setUserCity(`${data.city}, ${data.region}`);
-        else if (data.country_name) setUserCity(data.country_name);
-      })
-      .catch(() => { });
-  }, []);
+  fetch("https://ipwho.is/")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.city && data.region) setUserCity(`${data.city}, ${data.region}`);
+      else if (data.country) setUserCity(data.country);
+    })
+    .catch(() => { });
 
   const copyEmail = () => {
     if (user?.gmail) {
@@ -342,22 +330,17 @@ const ExperiencedExecutive = () => {
             }}
           >
             {experience.map((exp, i) => {
-              // ─── Logic to check if end_date is today or ongoing ───
               let endDateDisplay = "Present";
 
               if (exp.end_date) {
                 const endDate = new Date(exp.end_date);
                 const today = new Date();
 
-                // Compare only year-month-day (ignore time)
                 const isToday =
                   endDate.getFullYear() === today.getFullYear() &&
                   endDate.getMonth() === today.getMonth() &&
                   endDate.getDate() === today.getDate();
 
-                // If end_date is today → show "Present"
-                // If end_date is in the past → show formatted date
-                // If end_date is in future → still show "Present" (ongoing)
                 if (!isToday && endDate < today) {
                   endDateDisplay = endDate.toLocaleDateString("en-US", {
                     year: "numeric",
