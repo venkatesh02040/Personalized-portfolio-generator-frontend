@@ -6,12 +6,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../styles/editPortfolio.css";
+import { useAuth } from "../context/AuthContext"; // ✅ ADDED
 
 const PORTFOLIO_API = "https://personalized-portfolio-generator.onrender.com/api/portfolio";
 const PROFILE_UPLOAD_API = "https://personalized-portfolio-generator.onrender.com/api/upload/profile-image";
 const PROJECT_UPLOAD_API = "https://personalized-portfolio-generator.onrender.com/api/upload/project-image";
 
 const EditPortfolio = () => {
+    const { updateUser } = useAuth(); // ✅ ADDED
     const [portfolioType, setPortfolioType] = useState(null);
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
@@ -312,10 +314,7 @@ const EditPortfolio = () => {
                 },
             });
 
-            // Update localStorage with latest user data
-            if (res.data.user) {
-                localStorage.setItem("user", JSON.stringify(res.data.user));
-            }
+            if (res.data.user) updateUser(res.data.user); // ✅ ADDED (replaces localStorage.setItem)
 
             message.success("Portfolio and profile updated successfully!");
             // Optional: navigate("/portfolio") or refresh dashboard
@@ -707,20 +706,20 @@ const EditPortfolio = () => {
                                                 <label>Start Date <span className="required">*</span></label>
                                                 <input
                                                     type="date"
-                                                    value={exp.start_date}  // Now correctly formatted as YYYY-MM-DD
+                                                    value={exp.start_date}
                                                     onChange={(e) => updateArrayField("experience", i, "start_date", e.target.value)}
                                                 />
                                             </div>
                                             <div>
                                                 <label>
-                                                    End Date <span className="required">*</span> <span className="field-note">If you are still working, select today’s date.</span>
+                                                    End Date <span className="required">*</span> <span className="field-note">If you are still working, select today's date.</span>
                                                 </label>
                                                 {/* <small className="field-note">
-                                                    If you are still working, select today’s date.
-                                                </small>                                                 */}
+                                                    If you are still working, select today's date.
+                                                </small> */}
                                                 <input
                                                     type="date"
-                                                    value={exp.end_date}  // Now correctly formatted as YYYY-MM-DD
+                                                    value={exp.end_date}
                                                     onChange={(e) => updateArrayField("experience", i, "end_date", e.target.value)}
                                                 />
                                             </div>

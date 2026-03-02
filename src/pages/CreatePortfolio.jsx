@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { message, Spin } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Uncomment if using react-router
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../styles/createPortfolio.css";
+import { useAuth } from "../context/AuthContext"; // ✅ ADDED
 
 const PORTFOLIO_API =
   "https://personalized-portfolio-generator.onrender.com/api/portfolio";
@@ -13,6 +14,7 @@ const PROJECT_UPLOAD_API =
   "https://personalized-portfolio-generator.onrender.com/api/upload/project-image";
 
 const CreatePortfolio = () => {
+  const { updateUser } = useAuth(); // ✅ ADDED
   const [portfolioType, setPortfolioType] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasExistingPortfolio, setHasExistingPortfolio] = useState(false);
@@ -68,7 +70,7 @@ const CreatePortfolio = () => {
     ],
   });
 
-  const navigate = useNavigate(); // Uncomment if using react-router for login redirect
+  const navigate = useNavigate();
 
   // ────────────────────────────────────────────────
   //  Token Helper
@@ -77,7 +79,6 @@ const CreatePortfolio = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       message.error("Please log in to continue");
-      // navigate("/login"); // Uncomment if using react-router
       return {};
     }
     return { Authorization: `Bearer ${token}` };
@@ -105,7 +106,6 @@ const CreatePortfolio = () => {
       if (err.response?.status === 401) {
         message.error("Session expired. Please log in again.");
         localStorage.removeItem("token");
-        // navigate("/login");
       } else {
         message.error("Failed to upload profile image");
       }
@@ -132,7 +132,6 @@ const CreatePortfolio = () => {
       if (err.response?.status === 401) {
         message.error("Session expired. Please log in again.");
         localStorage.removeItem("token");
-        // navigate("/login");
       } else {
         message.error("Failed to upload project image");
       }
@@ -251,21 +250,23 @@ const CreatePortfolio = () => {
 
     try {
       setLoading(true);
-      await axios.post(PORTFOLIO_API, payload, {
+      const res = await axios.post(PORTFOLIO_API, payload, {
         headers: {
           ...authHeader,
           "Content-Type": "application/json",
         },
       });
+
+      if (res.data.user) updateUser(res.data.user); // ✅ ADDED
+
       message.success("Portfolio created successfully!");
       // Optional: reset form or redirect
-      // setFormData(initialFormData); // if you want to reset
+      // setFormData(initialFormData);
     } catch (err) {
       console.error("Portfolio creation error:", err);
       if (err.response?.status === 401) {
         message.error("Session expired. Please log in again.");
         localStorage.removeItem("token");
-        // navigate("/login");
       } else {
         message.error(err.response?.data?.message || "Failed to create portfolio");
       }
@@ -302,7 +303,7 @@ const CreatePortfolio = () => {
               Please go to the <strong>Edit Portfolio</strong> page to make changes or update it.
             </p>
             <button
-              onClick={() => navigate("/edit-portfolio")} // ← adjust route if different
+              onClick={() => navigate("/edit-portfolio")}
               style={{
                 marginTop: "24px",
                 padding: "12px 32px",

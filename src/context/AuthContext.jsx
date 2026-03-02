@@ -33,10 +33,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post(`${API_URL}/auth/register`, formData);
 
-      // store both token + user
       setToken(res.data.token);
       setUser(res.data.user);
-
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       return { success: true };
@@ -55,10 +53,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post(`${API_URL}/auth/login`, formData);
 
-      // store both token + user
       setToken(res.data.token);
       setUser(res.data.user);
-
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       return { success: true };
@@ -80,6 +76,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
+  /* ==============================
+     UPDATE USER ✅ ADDED
+     Call this after any portfolio save
+     to keep state and localStorage in sync
+  ============================== */
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,7 +95,8 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!token,
         register,
         login,
-        logout
+        logout,
+        updateUser  // ✅ expose it
       }}
     >
       {children}
