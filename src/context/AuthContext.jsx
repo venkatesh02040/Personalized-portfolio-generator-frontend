@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
-        updateUser  // ✅ expose it
+        updateUser
       }}
     >
       {children}
