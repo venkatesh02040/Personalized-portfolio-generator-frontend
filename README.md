@@ -1,16 +1,59 @@
-# React + Vite
+README.md
+Personalized Dynamic Digital Portfolio Generator
+MCSP-232 | Master of Computer Applications (MCA_NEW)
+Submitted by: Yenumula Sri Venkatesh (EN: 2450994032)
+Project Guide: Prathik K (M.Tech)
+Year of Submission: 2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project Description
+This is a full-stack MERN web application that allows users to create, manage, and instantly host a professional, dynamic, and fully responsive digital portfolio.
 
-Currently, two official plugins are available:
+Users log in to a secure dashboard, manage their career data (Education, Experience, Projects, Skills, etc.), choose from multiple templates, and get a public portfolio website hosted at a unique URL (/view/[username]). No coding knowledge is required.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
+- Secure JWT-based authentication (Register / Login)
+- Full CRUD operations on portfolio sections
+- Multiple customizable portfolio templates
+- Dynamic public portfolio at /view/[username]
+- Fully responsive (Mobile-First Design)
+- Image upload support
 
-## React Compiler
+Technology Stack (MERN)
+Frontend    : React.js + Tailwind CSS / antd
+Backend     : Node.js + Express.js
+Database    : MongoDB (embedded documents)
+Auth        : JWT + bcrypt
+Others      : MongoDB Compass, Postman
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Prerequisites
+- Node.js (LTS v18 or higher)
+- MongoDB (local or MongoDB Atlas)
+- VS Code (recommended)
 
-## Expanding the ESLint configuration
+How to Run the Project from VS Code
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Backend Setup
+   cd backend
+   npm install
+   # Create .env file
+   PORT=5000
+   MONGO_URI=mongodb://127.0.0.1:27017/portfolio_db
+   JWT_SECRET=your_super_secret_jwt_key_here_2026
+   npm start
+
+2. Frontend Setup (Open new terminal)
+   cd frontend
+   npm install
+   npm start
+
+   Frontend will open at http://localhost:3000
+
+How to Use
+1. Go to http://localhost:3000
+2. Register / Login
+3. Fill Education, Experience, Projects, Skills
+4. Choose template
+5. View live portfolio: http://localhost:3000/view/your-username
+
+Prepared by: Yenumula Sri Venkatesh
+Date: 30 March 2026
